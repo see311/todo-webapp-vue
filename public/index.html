@@ -1,17 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>todo-webapp-vue</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but todo-webapp-vue doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:"
+        />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="theme-color" content="#2196f3" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+        <title>todo-webapp-vue</title>
+        <style>
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                margin: 0;
+            }
+            #init-loading {
+                width: 100%;
+                height: 100%;
+                box-shadow: 0 0 20px #007aff inset;
+                box-sizing: border-box;
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: flex;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+            .dots {
+                width: 3.5em;
+                display: flex;
+                flex-flow: row nowrap;
+                align-items: center;
+                justify-content: space-between;
+                margin: auto;
+            }
+
+            .dots div {
+                width: 0.8em;
+                height: 0.8em;
+                border-radius: 50%;
+                background-color: #007aff;
+                animation: fade 0.8s ease-in-out alternate infinite;
+            }
+
+            .dots div:nth-of-type(1) {
+                animation-delay: -0.4s;
+            }
+
+            .dots div:nth-of-type(2) {
+                animation-delay: -0.2s;
+            }
+
+            @keyframes fade {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        </style>
+        <script>
+            document.addEventListener("readystatechange", function() {
+                if (document.readyState == "interactive")
+                    document.getElementById("init-loading").style.display =
+                        "none";
+            });
+        </script>
+    </head>
+    <body>
+        <noscript>
+            <strong>
+                We're sorry but todo-webapp-vue doesn't work properly without
+                JavaScript enabled. Please enable it to continue.
+            </strong>
+        </noscript>
+        <div id="init-loading">
+            <div class="dots">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    </body>
 </html>
