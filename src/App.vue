@@ -77,4 +77,7 @@
   font-feature-settings: "liga";
   text-align: center;
 }
+#nprogress .bar{
+  z-index: 20001 !important;
+}
 </style>

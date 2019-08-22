@@ -65,6 +65,9 @@ export default {
         f7Link,
         f7Searchbar,
         f7Icon
+    },
+    beforeUpdate(){
+        console.log(this.$store.state.user.token);
     }
 };
 </script>

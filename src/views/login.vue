@@ -1,30 +1,34 @@
 <template>
     <f7-page no-toolbar no-navbar no-swipeback login-screen>
-        <f7-login-screen-title>Login</f7-login-screen-title>
+        <f7-login-screen-title>登陆</f7-login-screen-title>
         <f7-list form ref="form" class="">
             <f7-list-input
-                ref="myInput"
-                label="Username"
-                type="text"
-                placeholder="Your username"
-                :value="username"
-                @input="username = $event.target.value"
+                label="邮箱"
+                type="email"
+                :value="email"
+                @input="email = $event.target.value"
                 validate
                 required
+                clear-button
+                placeholder="你的邮箱"
             ></f7-list-input>
             <f7-list-input
-                label="Password"
+                label="密码"
                 type="password"
-                placeholder="Your password"
                 :value="password"
                 @input="password = $event.target.value"
                 validate
                 required
+                clear-button
+                placeholder="你的密码"
             ></f7-list-input>
             <f7-list>
                 <f7-list-button type="submit" @click="signIn">
-                    Sign In
+                    登陆
                 </f7-list-button>
+                <f7-block-footer>
+                    还没有账号？<a href="/signup">注册</a>
+                </f7-block-footer>
             </f7-list>
         </f7-list>
     </f7-page>
@@ -34,10 +38,10 @@ import {
     f7Page,
     f7LoginScreenTitle,
     f7List,
-    f7ListItem,
     f7ListButton,
     f7BlockFooter,
-    f7ListInput
+    f7ListInput,
+    f7Button
 } from "framework7-vue";
 
 export default {
@@ -45,36 +49,47 @@ export default {
         f7Page,
         f7LoginScreenTitle,
         f7List,
-        f7ListItem,
         f7ListButton,
         f7BlockFooter,
-        f7ListInput
+        f7ListInput,
+        f7Button
     },
     data() {
         return {
-            username: "",
-            password: ""
+            email: "test@qq.com",
+            password: "123456"
         };
     },
     methods: {
         signIn() {
-            const self = this;
-            const app = self.$f7;
-            const router = self.$f7router;
+            const app = this.$f7;
+            const router = this.$f7router;
             app.input.validateInputs("form");
 
-            const inputs = Array.from(self.$refs.form.$el);
+            const inputs = Array.from(this.$refs.form.$el);
             let valid = true;
             inputs.forEach(e => {
                 if (e.validity.valid !== true) valid = false;
             });
-            if (valid)
-                app.dialog.alert(
-                    `Username: ${self.username}<br>Password: ${self.password}`,
-                    () => {
-                        router.navigate("/test");
+            if (valid) {
+                this.$rqu({
+                    url: "/api/login",
+                    method: "post",
+                    data: {
+                        email: this.email,
+                        password: this.password
                     }
-                );
+                })
+                    .then(({ data }) => {
+                        console.log(data);
+
+                        this.$store.commit("login", { token: data.message });
+                        router.back();
+                    })
+                    .catch(err => {
+                        app.dialog.alert("用户名或密码错误", "登陆失败");
+                    });
+            }
         }
     }
 };
